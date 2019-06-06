@@ -15,3 +15,7 @@ npm install
 ```bash
 ionic serve
 ```
+
+## Cordova Plugins
+This app uses the following Cordova plugins:
+- [Bluetooth Serial](https://github.com/don/BluetoothSerial)
