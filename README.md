@@ -1,8 +1,5 @@
 # Bluetooth Terminal
-An app to interface with a Bluetooth Serial device.
-iOS         |  Android
-:-------------------------:|:-------------------------:
-![](screenshots/screenshot_iOS.png)  |  ![](screenshots/screenshot_Android.png)
+![](screenshots/screenshot_Android.png)
 
 
 ## Introduction
