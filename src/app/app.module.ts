@@ -9,7 +9,10 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 
-import { BluetoothSerial } from '@ionic-native/bluetooth-serial/ngx'
+// User-added modules
+import { BluetoothSerial } from '@ionic-native/bluetooth-serial/ngx';
+import { Device } from '@ionic-native/device/ngx';
+import { ConnectionInfoService } from './services/connection-info.service';
 
 @NgModule({
   declarations: [AppComponent],
@@ -19,8 +22,10 @@ import { BluetoothSerial } from '@ionic-native/bluetooth-serial/ngx'
     BluetoothSerial,
     StatusBar,
     SplashScreen,
+    Device,
+    ConnectionInfoService,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule { }

@@ -14,8 +14,16 @@
       </ion-card-title>
     </ion-card-header>
     <ion-card-content>
-        <ion-button expand="block" color="primary" id="btnOpenBluetooth" (click)="openBluetooth()">Open Bluetooth Settings</ion-button>
-
+      <ion-item>
+        <ion-icon slot="start" name="bluetooth"></ion-icon>
+        <ion-label>Status</ion-label>
+        <ion-badge slot="end" id="badgeStatus" color="danger">DISCONNECTED</ion-badge>
+      </ion-item>
+      <br><br>
+      <ion-label>Device Name</ion-label>
+      <ion-select placeholder="Select Device" id="selectDevice" (ionChange)="connect()" okText = "Connect"></ion-select>
+      <ion-button expand="block" color="medium" id="btnSearchDevices" (click)="scanDevices()">Search Devices</ion-button>
+      <ion-button expand="block" color="primary" id="btnOpenBluetooth" (click)="openBluetooth()">Open Bluetooth Settings</ion-button>
     </ion-card-content>
   </ion-card>
   <ion-card>
@@ -24,8 +32,8 @@
     </ion-card-header>
     <ion-card-content>
       <ion-textarea placeholder="Message..." id="textbox"></ion-textarea>
-      <ion-button color="tertiary" expand="block" (click)="sendText()">Send Text</ion-button>
-      <ion-button color="secondary" expand="block" (click)="receiveText()">Receive Text</ion-button>
+      <ion-button color="success" expand="block" (click)="sendText()">Send Text</ion-button>
+      <ion-button color="danger" expand="block" (click)="receiveText()">Receive Text</ion-button>
     </ion-card-content>
   </ion-card>
 </ion-content>
