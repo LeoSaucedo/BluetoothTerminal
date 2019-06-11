@@ -14,7 +14,7 @@ export class HomePage {
   constructor(private bluetoothSerial: BluetoothSerial,
     private device: Device,
     private connection: ConnectionInfoService,
-    public loadingController: LoadingController) { }
+    public loadingController: LoadingController,) { }
 
   /**
    * Opens the bluetooth dialog to connect to a device.
@@ -121,7 +121,7 @@ export class HomePage {
             //TODO: iOS Support
           }
         }
-        this.bluetoothSerial.connect(identifier).subscribe(() => {
+        this.bluetoothSerial.connect("00:A0:38:50:72:5F").subscribe(() => {
           alert("Successfully connected.");
           res.dismiss();
         }, (err) => {

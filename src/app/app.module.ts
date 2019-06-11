@@ -13,6 +13,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { BluetoothSerial } from '@ionic-native/bluetooth-serial/ngx';
 import { Device } from '@ionic-native/device/ngx';
 import { ConnectionInfoService } from './services/connection-info.service';
+import { BTFunctionsService } from './/services/btfunctions.service';
 
 @NgModule({
   declarations: [AppComponent],
@@ -24,6 +25,7 @@ import { ConnectionInfoService } from './services/connection-info.service';
     SplashScreen,
     Device,
     ConnectionInfoService,
+    BTFunctionsService,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]
