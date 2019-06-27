@@ -3,7 +3,7 @@
     <name>Bluetooth Terminal</name>
     <description>A terminal for Bluetooth Serial communications.</description>
     <author email="carlos@cgsphoto.com" href="https://cgsphoto.com/">Carlos Saucedo</author>
-    <content original-src="index.html" src="https://192.168.42.245:8100" />
+    <content src="index.html" />
     <access origin="*" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />

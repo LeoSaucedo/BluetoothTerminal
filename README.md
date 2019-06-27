@@ -4,7 +4,7 @@
 
 ## Introduction
 
-This app facilitates the sending and receiving of serial messages to and from Bluetooth Serial devices, such as Arduinos. Though not yet tested, it should also theoretically be able to send and receive to and from Android/iOS devices.
+This app facilitates the transfer of information to and from BLE devices, such as Arduinos, Bluetooth Chips, heart rate monitors, and more, from a phone, either iOS or Android.
 
 ## Building from Source
 
@@ -22,12 +22,12 @@ adb devices
 2. Serve the app:
 
 ```bash
-ionic cordova run android -l --ssl
+ionic cordova run android -l --ssl --no-native-run --address=0.0.0.0
 ```
 
 ## Cordova Plugins
 
 This app uses the following Cordova plugins:
-
-- [Bluetooth Serial](https://github.com/don/BluetoothSerial)
+- [BluetoothLE](https://github.com/randdusing/cordova-plugin-bluetoothle)
 - [Device](https://github.com/apache/cordova-plugin-device)
+- [Local Notifications](https://github.com/katzer/cordova-plugin-local-notifications)
