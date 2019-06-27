@@ -3,7 +3,7 @@
     <name>Bluetooth Terminal</name>
     <description>A terminal for Bluetooth Serial communications.</description>
     <author email="carlos@cgsphoto.com" href="https://cgsphoto.com/">Carlos Saucedo</author>
-    <content src="index.html" />
+    <content original-src="index.html" src="https://192.168.42.245:8100" />
     <access origin="*" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
@@ -86,4 +86,11 @@
     <plugin name="cordova-plugin-splashscreen" spec="5.0.2" />
     <plugin name="cordova-plugin-ionic-webview" spec="^4.0.0" />
     <plugin name="cordova-plugin-ionic-keyboard" spec="^2.0.5" />
+    <allow-navigation href="https://192.168.42.108:8100" sessionid="2448ad8d" />
+    <allow-navigation href="https://192.168.42.55:8100" sessionid="d4dbb589" />
+    <allow-navigation href="https://192.168.42.243:8100" sessionid="b0de72f6" />
+    <allow-navigation href="https://192.168.42.45:8100" sessionid="572124d5" />
+    <allow-navigation href="https://192.168.42.15:8100" sessionid="a83ab12b" />
+    <allow-navigation href="https://192.168.42.174:8100" sessionid="425d2a0a" />
+    <allow-navigation href="https://192.168.42.245:8100" sessionid="0e6a43a8" />
 </widget>

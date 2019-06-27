@@ -1,12 +1,12 @@
 import { TestBed } from '@angular/core/testing';
 
-import { BTFunctionsService } from './btfunctions.service';
+import { UiElementsService } from './ui-elements.service';
 
-describe('BTFunctionsService', () => {
+describe('UiElementsService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should be created', () => {
-    const service: BTFunctionsService = TestBed.get(BTFunctionsService);
+    const service: UiElementsService = TestBed.get(UiElementsService);
     expect(service).toBeTruthy();
   });
 });
