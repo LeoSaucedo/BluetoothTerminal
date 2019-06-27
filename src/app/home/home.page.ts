@@ -1,8 +1,5 @@
 import { Component } from '@angular/core';
-import { BluetoothSerial } from '@ionic-native/bluetooth-serial/ngx';
-import { Device } from '@ionic-native/device/ngx';
-import { ConnectionInfoService } from '../services/connection-info.service';
-import { LoadingController } from '@ionic/angular';
+import { BLEFunctionsService } from '../services/blefunctions.service';
 
 @Component({
   selector: 'app-home',
@@ -11,127 +8,119 @@ import { LoadingController } from '@ionic/angular';
 })
 export class HomePage {
 
-  constructor(private bluetoothSerial: BluetoothSerial,
-    private device: Device,
-    private connection: ConnectionInfoService,
-    public loadingController: LoadingController,) { }
-
-  /**
-   * Opens the bluetooth dialog to connect to a device.
-   */
-  openBluetooth() {
-    this.bluetoothSerial.showBluetoothSettings();
-  }
+  constructor(
+    private bt: BLEFunctionsService,
+  ) { }
 
   /**
    * Sends the message to the bluetooth device.
    */
   sendText() {
-    this.bluetoothSerial.isConnected().then(() => {
-      // @ts-ignore
-      var content:string = document.getElementById("textbox").value;
-      if(content == ""){
-        alert("Message field cannot be empty.");
-      }else{
-        this.bluetoothSerial.write(content).then(() => {
-          content = "";
-        }, (err) => {
-          alert("Error sending message.");
-        });
-        content = "";
-      }
-    }, () => {
-      alert("You are not connected. Try again.");
+    //@ts-ignore
+    var serviceId: string = document.getElementById("textboxService").value;
+    //@ts-ignore
+    var charId: string = document.getElementById("textboxWrite").value;
+    //@ts-ignore
+    var message = document.getElementById("textbox").value;
+    this.bt.write(this.bt.currentDevice.address, serviceId, charId, message).then(success => {
+      document.getElementById("textbox").setAttribute("value", "");
     })
   }
+
   /**
-   * Reads a message into the text box.
+   * Clears the text box contents.
    */
-  receiveText() {
-    this.bluetoothSerial.isConnected().then(() => {
-      // @ts-ignore
-      var content: string = document.getElementById("textbox").value;
-      this.bluetoothSerial.readUntil('\r').then((msg) => {
-        content = msg;
-      }, () => {
-        alert("Error receiving message.");
-      })
-    }, () => {
-      alert("You are not connected. Try again.");
-    });
+  clearBox(){
+    document.getElementById("textbox").setAttribute("value", "");
   }
 
   /**
    * Scans for bluetooth devices and populates the dropdown.
    */
   scanDevices() {
-    var dropdown = document.getElementById("selectDevice");
-    // Clearing out all of the elements in the dropdown.
-    while (dropdown.firstChild) {
-      dropdown.removeChild(dropdown.firstChild);
+    // Clearing the dropdown of any old elements.
+    var dropDown = document.getElementById("selectDevice");
+    while (dropDown.firstChild) {
+      dropDown.removeChild(dropDown.firstChild);
     }
-
-    this.loadingController.create({
-      message: "Scanning for devices...",
-    }).then((res) => {
-      res.present();
-      if (this.device.platform == "Android") {
-        // Search for bluetooth devices
-        this.bluetoothSerial.discoverUnpaired().then((val) => {
-          this.connection.scanList = val;
-          for (var i = 0; i < this.connection.scanList.length; i++) {
-            if (this.connection.scanList[i].name != null) {
-              var newDevice = document.createElement("ion-select-option");
-              newDevice.innerHTML = this.connection.scanList[i].name;
-              dropdown.appendChild(newDevice);
-            } else if (this.connection.scanList[i].address != null) {
-              var newDevice = document.createElement("ion-select-option");
-              newDevice.innerHTML = this.connection.scanList[i].address;
-              dropdown.appendChild(newDevice);
-            }
-          }
-          res.dismiss();
-        }, () => {
-          res.dismiss();
-          alert("Failed to scan for devices.");
-        });
+    this.bt.scan(10).then(devices => {
+      // Fills the array with the new elements.
+      for (var i = 0; i < this.bt.scanList.length; i++) {
+        var newDevice = document.createElement("ion-select-option");
+        newDevice.innerHTML = this.bt.scanList[i].name;
+        dropDown.appendChild(newDevice);
       }
-      //TODO: iOS Support
-    });
+    }, error => {
+      alert("Failed to scan devices.");
+    })
   }
 
   /**
    * Attempts to connect to the device that was selected on the dropdown.
    */
   connect() {
-    this.loadingController.create({
-      message: "Connecting to device..."
-    }).then((res) => {
-      if(this.device.platform == "Android"){
-        res.present();
-        var identifier:string = "";
-        for(var i = 0; i < this.connection.scanList.length; i++){
-          //@ts-ignore
-          if(this.connection.scanList[i].name == document.getElementById("selectDevice").value
-          //@ts-ignore
-          || this.connection.scanList[i].address == document.getElementById("selectDevice").value){
-            if(this.device.platform == "Android"){
-              identifier = this.connection.scanList[i].address;
-            }
-            //TODO: iOS Support
-          }
-        }
-        this.bluetoothSerial.connect("00:A0:38:50:72:5F").subscribe(() => {
-          alert("Successfully connected.");
-          res.dismiss();
-        }, (err) => {
-          alert("Error:\n" + err);
-          res.dismiss();
-        });
-      }else if(this.device.platform == "iOS"){
-        //TODO: iOS Support
+    //@ts-ignore
+    var deviceName: string = document.getElementById("selectDevice").value;
+    var identifier: string = null;
+    for (var i = 0; i < this.bt.scanList.length; i++) {
+      if (deviceName == this.bt.scanList[i].name) {
+        identifier = this.bt.scanList[i].address;
       }
-    })
+    }
+    if (identifier != null) {
+      this.bt.connect(identifier).then(() => {
+        var statusLabel = document.getElementById("badgeStatus");
+        statusLabel.setAttribute("color", "success");
+        statusLabel.innerHTML = "CONNECTED";
+      }).then(() => {
+        //@ts-ignore
+        var serviceId: string = document.getElementById("textboxService").value;
+        //@ts-ignore
+        var charId: string = document.getElementById("textboxRead").value;
+        this.bt.subscribe(identifier, serviceId, charId).subscribe(val => {
+          //@ts-ignore
+          document.getElementById("textbox").setAttribute("value", val);
+        });
+      });
+    }
   }
 
+  /**
+   * Disconnects from the device.
+   */
+  disconnect() {
+    //@ts-ignore
+    var deviceName: string = document.getElementById("selectDevice").value;
+    var identifier: string = null;
+    for (var i = 0; i < this.bt.scanList.length; i++) {
+      if (deviceName == this.bt.scanList[i].name) {
+        identifier = this.bt.scanList[i].address;
+      }
+    }
+    if (identifier != null) {
+      this.bt.disconnect(identifier);
+      var statusLabel = document.getElementById("badgeStatus");
+      statusLabel.setAttribute("color", "danger");
+      statusLabel.innerHTML = "DISCONNECTED";
+    } else {
+      alert("Device not found. Try scanning again...");
+    }
+  }
+
+  /**
+   * Toggles whether the BLE settings can be modified.
+   */
+  toggleEditSettings() {
+    var toggle = document.getElementById("toggleEditValues");
+    //@ts-ignore
+    if (toggle.checked == true) {
+      document.getElementById("textboxService").setAttribute("disabled", "false");
+      document.getElementById("textboxRead").setAttribute("disabled", "false");
+      document.getElementById("textboxWrite").setAttribute("disabled", "false");
+    } else {
+      document.getElementById("textboxService").setAttribute("disabled", "true");
+      document.getElementById("textboxRead").setAttribute("disabled", "true");
+      document.getElementById("textboxWrite").setAttribute("disabled", "true");
+    }
+  }
 }

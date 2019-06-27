@@ -19,11 +19,13 @@
         <ion-label>Status</ion-label>
         <ion-badge slot="end" id="badgeStatus" color="danger">DISCONNECTED</ion-badge>
       </ion-item>
-      <br><br>
-      <ion-label>Device Name</ion-label>
-      <ion-select placeholder="Select Device" id="selectDevice" (ionChange)="connect()" okText = "Connect"></ion-select>
+      <ion-item>
+          <ion-label position="stacked">Device Name</ion-label>
+          <ion-select placeholder="Select Device" id="selectDevice" (ionChange)="connect()" okText = "Connect"></ion-select>
+      </ion-item>
       <ion-button expand="block" color="medium" id="btnSearchDevices" (click)="scanDevices()">Search Devices</ion-button>
-      <ion-button expand="block" color="primary" id="btnOpenBluetooth" (click)="openBluetooth()">Open Bluetooth Settings</ion-button>
+      <ion-button expand="block" color="primary" id="btnConnect" (click)="connect()">Connect</ion-button>
+      <ion-button expand="block" color="danger" id="btnDisconnect" (click)="disconnect()">Disconnect</ion-button>
     </ion-card-content>
   </ion-card>
   <ion-card>
@@ -31,9 +33,35 @@
       <ion-card-title>Transmit/Receive</ion-card-title>
     </ion-card-header>
     <ion-card-content>
-      <ion-textarea placeholder="Message..." id="textbox"></ion-textarea>
+      <ion-item>
+          <ion-textarea placeholder="Message..." id="textbox"></ion-textarea>
+      </ion-item>
       <ion-button color="success" expand="block" (click)="sendText()">Send Text</ion-button>
-      <ion-button color="danger" expand="block" (click)="receiveText()">Receive Text</ion-button>
+      <ion-button color="danger" expand="block" (click)="clearBox()">Clear Textbox</ion-button>
+    </ion-card-content>
+  </ion-card>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>BLE Settings</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-item>
+        <ion-label>Edit values</ion-label>
+        <ion-toggle id="toggleEditValues" (ionChange)="toggleEditSettings()"></ion-toggle>
+      </ion-item>
+      <br><br>
+      <ion-item>
+          <ion-label position="stacked">Service UUID</ion-label>
+          <ion-textarea id="textboxService" value="5939D0C0-44EC-11E5-88B6-0002A5D5C51B" disabled="true"></ion-textarea>
+      </ion-item>
+      <ion-item>
+          <ion-label position="stacked">Read Characteristic UUID</ion-label>
+          <ion-textarea id="textboxRead" value="68E1C580-44EE-11E5-9D23-0002A5D5C51B" disabled="true"></ion-textarea>
+      </ion-item>
+      <ion-item>
+          <ion-label position="stacked" >Write Characteristic UUID</ion-label>
+          <ion-textarea id="textboxWrite" value="899C5F60-44EE-11E5-B30D-0002A5D5C51B" disabled="true"></ion-textarea>
+      </ion-item>
     </ion-card-content>
   </ion-card>
 </ion-content>
