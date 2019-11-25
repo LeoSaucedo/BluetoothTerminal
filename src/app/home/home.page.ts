@@ -52,7 +52,7 @@ export class HomePage {
       }
     }, error => {
       alert("Failed to scan devices.");
-    })
+    });
   }
 
   /**

@@ -93,4 +93,5 @@
     <allow-navigation href="https://192.168.42.15:8100" sessionid="a83ab12b" />
     <allow-navigation href="https://192.168.42.174:8100" sessionid="425d2a0a" />
     <allow-navigation href="https://192.168.42.245:8100" sessionid="0e6a43a8" />
+    <allow-navigation href="https://10.20.9.146:8100" sessionid="90c3e799" />
 </widget>

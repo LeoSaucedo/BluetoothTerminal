@@ -2,6 +2,8 @@
 
 ![](screenshots/screenshot_Android.jpg)
 
+<img width="60%" align="center" hspace="19" vspace="12" src="screenshots/screenshot_Android.jpg"></img>
+
 ## Introduction
 
 This app facilitates the transfer of information to and from BLE devices, such as Arduinos, Bluetooth Chips, heart rate monitors, and more, from a phone, either iOS or Android.

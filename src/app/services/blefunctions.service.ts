@@ -26,8 +26,23 @@ export class BLEFunctionsService {
    * Enables then initializes BLE on the device.
    */
   initialize() {
+    // Check for location permissions.
+
     if (this.ble.isEnabled()) {
       if (this.device.platform == "Android") {
+        if(parseFloat(this.device.version) >= 6){
+          // If API > 23
+          this.ble.hasPermission().then(hasPermission => {
+            if(!hasPermission){
+              this.ble.requestPermission();
+            }
+          });
+          this.ble.isLocationEnabled().then(isLocationEnabled => {
+            if(!isLocationEnabled){
+              this.ble.requestLocation();
+            }
+          });
+        }
         this.ble.enable();
         this.ui.presentToast("Bluetooth enabled.");
       } else {
@@ -75,7 +90,7 @@ export class BLEFunctionsService {
       }).then(loading => {
         loading.present();
         that.ble.startScan({
-          "allowDuplicates": false,
+          "allowDuplicates": true,
         }).subscribe(scan => {
           // Add each scan result to the scanList.
           if (scan.name) {
@@ -116,6 +131,7 @@ export class BLEFunctionsService {
         loading.present();
         that.ble.connect({
           "address": identifier,
+          "autoConnect": true
         }).subscribe(currentDevice => {
           that.currentDevice = currentDevice;
           loading.dismiss();
@@ -244,7 +260,7 @@ export class BLEFunctionsService {
         "service": serviceId,
         "characteristic": charId
       }).subscribe(result => {
-        if(result.value){
+        if (result.value) {
           observer.next(atob(result.value));
         }
       });
